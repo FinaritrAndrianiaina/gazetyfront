@@ -1,31 +1,38 @@
-import Axios from 'axios';
-import React, { Component, useState } from 'react'
-import { render } from 'react-dom';
-import axiosInstance from '../axiosInstance'
-
+import { Flex } from "@chakra-ui/core";
+import React, { Component } from "react";
+import axiosInstance from "../axiosInstance";
+import ArticleCard from "../components/ArticleCard";
 
 class Home extends Component {
-    state = {
-        article:[]
-    }
-    constructor(props){
+    state = { article: [] };
+
+    constructor(props) {
         super(props);
-        axiosInstance.get("Article")
-            .then((response) => this.setState({article:response.data}))
+    }
+    componentDidMount() {
+        axiosInstance
+            .get("Article")
+            .then((response) => {
+                console.log('response.data', response.data);
+                 this.setState({ article: response.data })
+            })
             .catch((error) => console.error(error));
     }
-    render(){
-
+    render() {
         return (
             <>
-            <p>This is home</p>
-            {this.state.article.map((v,index)=>(
-                <p>{v.titre}</p>
-                ))}
-        </>
-    )
+                <Flex flexWrap={"wrap"} direction="row" p={5} justifyContent="center">
+                    {this.state.article.map((v, index) => (
+                        <React.Fragment key={"article-card-" + index}>
+                            <ArticleCard id={v.id} title={v.titre}   createdAt={v.createdAt}>
+                                {v.description}
+                            </ArticleCard>
+                        </React.Fragment>
+                    ))}
+                </Flex>
+            </>
+        );
     }
 }
 
-
-export default Home
+export default Home;

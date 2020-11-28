@@ -6,7 +6,10 @@ export default extendTheme({
         global: (props) => ({
             body: {
                 color: mode("gray.700", "whiteAlpha.900")(props),
-                bg: mode("whiteAlpha.100", "gray.700")(props),
+                bg: mode("white", "gray.700")(props),
+            },
+            "nav.navbar": {
+                bg: mode("white", "gray.700")(props),
             },
         }),
     },

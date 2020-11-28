@@ -3,17 +3,20 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
-import { ChakraProvider } from "@chakra-ui/core";
-import theme from "./theme";
+import {
+    ChakraProvider,
+    ColorModeScript,
+    localStorageManager,
+} from "@chakra-ui/core";
+import "moment/locale/fr";
+import { UsersProvider } from "./UserContext";
 
 ReactDOM.render(
-    <React.StrictMode>
-        <ChakraProvider theme={theme}>
-            <Router>
-                <App />
-            </Router>
-        </ChakraProvider>
-    </React.StrictMode>,
+    <Router>
+        <UsersProvider>
+            <App />
+        </UsersProvider>
+    </Router>,
     document.getElementById("root")
 );
 

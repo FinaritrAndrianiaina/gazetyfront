@@ -1,23 +1,44 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
-import ColorSwitch from './components/ColorSwitch';
-import Navbar from './components/Navbar';
-import Articles from './pages/Articles';
-import NotFound from './pages/NotFound';
-import Home from './pages/Home';
-import Login from './pages/Login';
+import Navbar from "./components/Navbar";
+import Articles from "./pages/Articles";
+import ArticlePage from "./pages/ArticlePage";
+import theme from "./theme";
+import NotFound from "./pages/NotFound";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import { UsersContext } from "./UserContext";
+import {
+    ChakraProvider,
+    localStorageManager,
+    StylesProvider,
+} from "@chakra-ui/core";
+import UserPage from "./pages/UserPage";
 
 function App() {
+    const { isAuth, disconnect } = useContext(UsersContext);
     return (
         <>
-            <Navbar />
-            <Switch>
-                <Route exact path={["/home", "/"]} component={Home} />
-                <Route path={["/article"]} component={Articles} />
-                <Route path={["/login"]} component={Login} />
-                <Route path="*" component={NotFound} />
-            </Switch>
-            <ColorSwitch />
+            <ChakraProvider
+                theme={theme}
+                colorModeManager={localStorageManager}
+            >
+                <StylesProvider>
+                    <Navbar isAuth={isAuth} disconnect={disconnect} />
+                    <Switch>
+                        <Route exact path={["/home", "/"]} component={Home} />
+                        <Route
+                            path={["/article/:id"]}
+                            exact
+                            component={ArticlePage}
+                        />
+                        <Route path={["/article"]} component={Articles} />
+                        <Route path={["/login"]} component={Login} />
+                        <Route path={["/user"]} component={UserPage} />
+                        <Route path="*" component={NotFound} />
+                    </Switch>
+                </StylesProvider>
+            </ChakraProvider>
         </>
     );
 }

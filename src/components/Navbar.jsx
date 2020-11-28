@@ -1,19 +1,23 @@
 import { Flex, chakra, Button } from "@chakra-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
+import ColorSwitch from "../components/ColorSwitch";
 
 const LinkBtn = ({ children, to, ...rest }) => {
     return (
         <Link to={to}>
-            <Button {...rest}>{children}</Button>
+            <Button variant="ghost" {...rest}>
+                {children}
+            </Button>
         </Link>
     );
 };
 
-const Navbar = () => {
+const Navbar = ({ isAuth, disconnect, ...props }) => {
     return (
         <>
             <Flex
+                className="navbar"
                 shadow="sm"
                 zIndex={1}
                 as="nav"
@@ -24,13 +28,14 @@ const Navbar = () => {
                 flexDirection="row"
                 justifyContent="space-between"
             >
+                <ColorSwitch />
                 <Flex>
                     <chakra.h1
                         fontSize="30px"
                         fontWeight="900"
                         fontFamily="'Courrier New'"
                     >
-                        My Blog
+                        Gazety
                     </chakra.h1>
                 </Flex>
                 <Flex
@@ -39,21 +44,36 @@ const Navbar = () => {
                     justifyContent="space-around"
                     display={["none", "flex"]}
                 >
-                    <LinkBtn to="/" variant="ghost">
+                    <LinkBtn mx={5} to="/">
                         Acceuil
                     </LinkBtn>
-                    <LinkBtn to="/article" variant="ghost">
+
+                    <LinkBtn mx={5} to="/article">
                         Articles
                     </LinkBtn>
-                    <LinkBtn
-                        to="/login"
-                        variant="ghost"
-                        color="white"
-                        bg="teal.500"
-                        _hover={{ bg: "gray.500" }}
-                    >
-                        Se connecter
-                    </LinkBtn>
+                    {!isAuth ? (
+                        <LinkBtn
+                            to="/login"
+                            variant="solid"
+                            colorScheme="facebook"
+                        >
+                            Se connecter
+                        </LinkBtn>
+                    ) : (
+                        <>
+                            <LinkBtn
+                                to="/user"
+                                variant="outline"
+                                colorScheme="facebook"
+                                mx={5}
+                            >
+                                Utilisateur
+                            </LinkBtn>
+                            <Button variant="solid" onClick={disconnect}>
+                                Deconnecter
+                            </Button>
+                        </>
+                    )}
                 </Flex>
             </Flex>
             <chakra.div height={70} />
