@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 import humanizeDate from "../utils/humanizeDate";
+import MarkdownRuntime from "../components/MarkdownRuntime";
 
 class ArticlePage extends Component {
     state = {
@@ -40,7 +41,11 @@ class ArticlePage extends Component {
                     {this.state.article.description}
                 </Heading>
                 <Divider my={5} />
-                <Text>{this.state.article.contenu}</Text>
+                {this.state.article.contenu ? (
+                    <MarkdownRuntime>
+                        {this.state.article.contenu}
+                    </MarkdownRuntime>
+                ) : null}
             </Container>
         );
     }

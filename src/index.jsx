@@ -2,12 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import "slick-carousel/slick/slick-theme.css"
+import "slick-carousel/slick/slick.css"
 import { BrowserRouter as Router } from "react-router-dom";
-import {
-    ChakraProvider,
-    ColorModeScript,
-    localStorageManager,
-} from "@chakra-ui/core";
 import "moment/locale/fr";
 import { UsersProvider } from "./UserContext";
 
