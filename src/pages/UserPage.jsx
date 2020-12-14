@@ -1,5 +1,6 @@
-import React, { Component, useContext, useEffect, useState } from "react";
-import { UsersContext } from "../UserContext";
+import React, {Component, useContext, useEffect, useState} from "react";
+import {UsersContext} from "../UserContext";
+import {BiEdit} from "react-icons/bi"
 import {
     Box,
     Button,
@@ -7,6 +8,8 @@ import {
     Flex,
     FormControl,
     FormLabel,
+    chakra,
+    IconButton,
     Heading,
     Input,
     Stack,
@@ -33,27 +36,28 @@ import {
 } from "@chakra-ui/core";
 import axiosInstance from "../axiosInstance";
 import MarkdownRuntime from "../components/MarkdownRuntime";
+import * as PropTypes from "prop-types";
 
-const ItemClipboard = ({path,setCopied,...props}) => {
+const ItemClipboard = ({path, setCopied, ...props}) => {
     const value = `https://localhost:5001/${path}`;
-    const { onCopy,hasCopied } = useClipboard(value);
-    useEffect(()=>{
-        if(hasCopied){
+    const {onCopy, hasCopied} = useClipboard(value);
+    useEffect(() => {
+        if (hasCopied) {
             setCopied(path);
         }
-    },[hasCopied])
-    return <Image src={value} onClick={onCopy} />;
+    }, [hasCopied])
+    return <Image src={value} onClick={onCopy}/>;
 }
 
 const DrawerListImage = (props) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const {isOpen, onOpen, onClose} = useDisclosure();
     const btnRef = React.useRef();
-    const [list, setList] = useState({ image: [] });
+    const [list, setList] = useState({image: []});
     const [copied, setCopied] = useState(null);
     useEffect(() => {
         axiosInstance
             .get("file")
-            .then((response) => setList({ image: response.data }))
+            .then((response) => setList({image: response.data}))
             .catch((error) => console.error(error));
     }, []);
     return (
@@ -69,8 +73,8 @@ const DrawerListImage = (props) => {
             >
                 <DrawerOverlay>
                     <DrawerContent>
-                        <DrawerCloseButton />
-                        <DrawerHeader>{Boolean(copied)?`Vous avez copié ${copied}`:"Selectionner une image!!"}</DrawerHeader>
+                        <DrawerCloseButton/>
+                        <DrawerHeader>{Boolean(copied) ? `Vous avez copié ${copied}` : "Selectionner une image!!"}</DrawerHeader>
 
                         <DrawerBody>
                             <List spacing={2}>
@@ -98,6 +102,7 @@ class WhenAuthor extends Component {
     state = {
         preview: "",
     };
+
     constructor(props) {
         super(props);
         this.disclosure = this.props.disclosure;
@@ -106,6 +111,7 @@ class WhenAuthor extends Component {
         this.cover = React.createRef(null);
         this.description = React.createRef(null);
     }
+
     create() {
         const data = {
             titre: this.titre.current.value,
@@ -121,12 +127,14 @@ class WhenAuthor extends Component {
             })
             .catch((error) => console.error("error", error.response.data));
     }
+
     preview() {
         this.setState({
             ...this.state,
             preview: this.contenu.current.value,
         });
     }
+
     render() {
         return (
             <>
@@ -161,7 +169,7 @@ class WhenAuthor extends Component {
                             name="description"
                         />
                     </FormControl>
-                    <DrawerListImage />
+                    <DrawerListImage/>
                     <Textarea
                         ref={this.contenu}
                         placeholder="Contenu de votre article"
@@ -191,10 +199,61 @@ class WhenAuthor extends Component {
     }
 }
 
-const UserPage = () => {
-    const { user } = useContext(UsersContext);
-    const { isOpen, onOpen, onClose } = useDisclosure();
+class ModalAuthor extends Component {
+    static propTypes = {
+        onClick: PropTypes.func,
+        finalFocusRef: PropTypes.any,
+        open: PropTypes.bool,
+        onClose: PropTypes.func
+    }
+
+    render() {
+        return <React.Fragment>
+            <Modal
+                finalFocusRef={this.props.finalFocusRef}
+                isOpen={this.props.open}
+                onClose={this.props.onClose}
+            >
+                <ModalOverlay>
+                    <ModalContent maxWidth={["100%", "70%"]}>
+                        <ModalHeader>
+                            Créer un article
+                        </ModalHeader>
+                        <ModalCloseButton/>
+                        <ModalBody>
+                            <WhenAuthor
+                                disclosure={{
+                                    isOpen: this.props.open,
+                                    onOpen: this.props.onClick,
+                                    onClose: this.props.onClose,
+                                }}
+                            />
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button
+                                colorScheme="blue"
+                                mr={3}
+                                onClick={this.props.onClose}
+                            >
+                                Fermer
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </ModalOverlay>
+            </Modal>
+        </React.Fragment>
+    }
+}
+
+const UserPage = (props) => {
+    const {user, isAuth} = useContext(UsersContext);
+    const {isOpen, onOpen, onClose} = useDisclosure();
     const finalRef = React.useRef();
+    useEffect(() => {
+        if (!isAuth) {
+            props.history.push("/");
+        }
+    }, [isAuth])
     return (
         <>
             <Container maxW={["100%", "60%"]}>
@@ -235,45 +294,36 @@ const UserPage = () => {
                         </Button>
                     </Stack>
 
-                    {user.isAdmin ? (
-                        <React.Fragment>
+                    {user.isAuthor ? <>
                             <Button onClick={onOpen} width="70%">
                                 Créer un article
                             </Button>
-                            <Modal
-                                finalFocusRef={finalRef}
-                                isOpen={isOpen}
-                                onClose={onClose}
-                            >
-                                <ModalOverlay>
-                                    <ModalContent maxWidth={["100%", "70%"]}>
-                                        <ModalHeader>
-                                            Créer un article
-                                        </ModalHeader>
-                                        <ModalCloseButton />
-                                        <ModalBody>
-                                            <WhenAuthor
-                                                disclosure={{
-                                                    isOpen,
-                                                    onOpen,
-                                                    onClose,
-                                                }}
-                                            />
-                                        </ModalBody>
-                                        <ModalFooter>
-                                            <Button
-                                                colorScheme="blue"
-                                                mr={3}
-                                                onClick={onClose}
-                                            >
-                                                Fermer
-                                            </Button>
-                                        </ModalFooter>
-                                    </ModalContent>
-                                </ModalOverlay>
-                            </Modal>
-                        </React.Fragment>
-                    ) : null}
+                            <chakra.table width="70%" m={5}>
+                                <chakra.thead bg={"blue.500"} p={5} color={"white"} colorScheme={"blue"}>
+                                    <tr>
+                                        <td>Id</td>
+                                        <td>Titre</td>
+                                        <td>Action</td>
+                                    </tr>
+                                </chakra.thead>
+                                <tbody>
+                                {user.articles.map((v, index) => <chakra.tr key={"row-" + index.toString()} py={1}>
+                                    <td>
+                                        {v.id}
+                                    </td>
+                                    <td>
+                                        {v.title}
+                                    </td>
+                                    <td>
+                                        <IconButton colorScheme={"green"} icon={<BiEdit/>}/>
+                                    </td>
+                                </chakra.tr>)}
+                                </tbody>
+
+                            </chakra.table>
+                            <ModalAuthor finalFocusRef={finalRef} open={isOpen} onClose={onClose}/>
+                        </> : null}
+
                 </Flex>
             </Container>
         </>

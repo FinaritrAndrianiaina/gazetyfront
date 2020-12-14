@@ -5,6 +5,7 @@ import {
     FormControl,
     FormLabel,
     Heading,
+    Text,
     Input,
     Stack,
 } from "@chakra-ui/core";
@@ -34,6 +35,7 @@ class Login extends React.Component {
         console.log('this.isAuth', this.isAuth)
     }
     loginData() {
+        this.setState({...this.state, loading: true})
         axiosInstance
             .post("Users/login", {
                 username: this.username.current.value,
@@ -44,9 +46,10 @@ class Login extends React.Component {
                 this.props.history.push("/");
             })
             .catch((error) =>
-                this.setState({ ...this.state, message: error?.response?.data })
+                this.setState({...this.state, message: error?.response?.data.message, loading: false})
             );
     }
+    
     render() {
         return (
             <>
@@ -72,6 +75,7 @@ class Login extends React.Component {
                         >
                             S'enregistrer
                         </Heading>
+                        <Text> {this.state.message}</Text>
                         <Stack spacing={3} py={5} width={["100%", "70%"]}>
                             <FormControl id="username">
                                 <FormLabel>Nom d'utilisateur</FormLabel>
@@ -94,6 +98,7 @@ class Login extends React.Component {
                                 />
                             </FormControl>
                             <Button
+                                isLoading={this.state.loading}
                                 onClick={this.loginData.bind(this)}
                                 variant="solid"
                                 colorScheme="facebook"
