@@ -4,7 +4,7 @@ import {
     useColorModeValue,
     IconButton,
     Box,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { GiSun,GiMoon } from "react-icons/gi";
 
 const ColorSwitch = (props) => {

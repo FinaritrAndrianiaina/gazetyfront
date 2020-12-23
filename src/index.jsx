@@ -4,16 +4,19 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "slick-carousel/slick/slick-theme.css"
 import "slick-carousel/slick/slick.css"
-import { BrowserRouter as Router } from "react-router-dom";
+import {BrowserRouter as Router} from "react-router-dom";
 import "moment/locale/fr";
-import { UsersProvider } from "./UserContext";
+import {UsersProvider} from "./UserContext";
 
 ReactDOM.render(
-    <Router>
-        <UsersProvider>
-            <App />
-        </UsersProvider>
-    </Router>,
+    <>
+        <Router>
+            <UsersProvider>
+                <App/>
+            </UsersProvider>
+        </Router>
+    </>
+    ,
     document.getElementById("root")
 );
 

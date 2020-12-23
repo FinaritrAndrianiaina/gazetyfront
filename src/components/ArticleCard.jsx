@@ -6,7 +6,7 @@ import {
     Heading,
     Image,
     Text,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 import humanizeDate from "../utils/humanizeDate";
@@ -16,26 +16,22 @@ import { BsArrowRight } from "react-icons/bs";
 const ArticleCard = ({ title, children, createdAt, id, cover, ...props }) => {
     return (
         <Flex
-            w={360}
-            h={360}
-            mx={5}
             direction="column"
             borderWidth={1}
             rounded={5}
             shadow="md"
-            pt={5}
-            px={5}
-            mt={5}
-            pb={3}
             justifyContent="space-between"
         >
             <Image
+                borderTopLeftRadius={5}
+                borderTopRightRadius={5}
                 width="100%"
-                height="90px"
+                height="200px"
                 objectFit="cover"
                 src={`${cover}`}
             />
             <Flex
+                px={5}
                 direction="column"
                 justifyContent="space-between"
                 height="100%"
@@ -46,7 +42,7 @@ const ArticleCard = ({ title, children, createdAt, id, cover, ...props }) => {
                 </Text>
                 <Text fontSize="md">{sliceChar(children, 100)}</Text>
             </Flex>
-            <Flex direction="column">
+            <Flex px={5} pt={1} direction="column">
                 <Button
                     rightIcon={<Box as={BsArrowRight} size="32px" />}
                     as={Link}

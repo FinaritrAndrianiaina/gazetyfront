@@ -1,6 +1,5 @@
-import React, {Component, useContext, useEffect, useState} from "react";
+import React, {Component, useContext, useEffect} from "react";
 import {UsersContext} from "../UserContext";
-import {BiEdit} from "react-icons/bi"
 import {
     Box,
     Button,
@@ -8,95 +7,25 @@ import {
     Flex,
     FormControl,
     FormLabel,
-    chakra,
-    IconButton,
     Heading,
+    Image,
     Input,
-    Stack,
-    Textarea,
     Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
     ModalBody,
     ModalCloseButton,
-    useDisclosure,
-    Drawer,
-    DrawerBody,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerOverlay,
-    DrawerContent,
-    DrawerCloseButton,
-    List,
-    ListItem,
-    Image,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Stack,
+    Textarea,
     useClipboard,
-} from "@chakra-ui/core";
+    useDisclosure,
+} from "@chakra-ui/react";
 import axiosInstance from "../axiosInstance";
 import MarkdownRuntime from "../components/MarkdownRuntime";
 import * as PropTypes from "prop-types";
-
-const ItemClipboard = ({path, setCopied, ...props}) => {
-    const value = `https://localhost:5001/${path}`;
-    const {onCopy, hasCopied} = useClipboard(value);
-    useEffect(() => {
-        if (hasCopied) {
-            setCopied(path);
-        }
-    }, [hasCopied])
-    return <Image src={value} onClick={onCopy}/>;
-}
-
-const DrawerListImage = (props) => {
-    const {isOpen, onOpen, onClose} = useDisclosure();
-    const btnRef = React.useRef();
-    const [list, setList] = useState({image: []});
-    const [copied, setCopied] = useState(null);
-    useEffect(() => {
-        axiosInstance
-            .get("file")
-            .then((response) => setList({image: response.data}))
-            .catch((error) => console.error(error));
-    }, []);
-    return (
-        <>
-            <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
-                Liste des Images
-            </Button>
-            <Drawer
-                isOpen={isOpen}
-                placement="right"
-                onClose={onClose}
-                finalFocusRef={btnRef}
-            >
-                <DrawerOverlay>
-                    <DrawerContent>
-                        <DrawerCloseButton/>
-                        <DrawerHeader>{Boolean(copied) ? `Vous avez copié ${copied}` : "Selectionner une image!!"}</DrawerHeader>
-
-                        <DrawerBody>
-                            <List spacing={2}>
-                                {list.image.map((value, index) => (
-                                    <ListItem key={index}>
-                                        <ItemClipboard setCopied={setCopied} path={value.path}/>
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </DrawerBody>
-
-                        <DrawerFooter>
-                            <Button variant="outline" mr={3} onClick={onClose}>
-                                Close
-                            </Button>
-                        </DrawerFooter>
-                    </DrawerContent>
-                </DrawerOverlay>
-            </Drawer>
-        </>
-    );
-};
+import {DrawerListImage} from "../components/DrawerListImage";
 
 class WhenAuthor extends Component {
     state = {
@@ -214,7 +143,7 @@ class ModalAuthor extends Component {
                 isOpen={this.props.open}
                 onClose={this.props.onClose}
             >
-                <ModalOverlay>
+                <ModalOverlay zIndex={1}>
                     <ModalContent maxWidth={["100%", "70%"]}>
                         <ModalHeader>
                             Créer un article
@@ -295,9 +224,10 @@ const UserPage = (props) => {
                     </Stack>
 
                     {user.isAuthor ? <>
-                            <Button onClick={onOpen} width="70%">
-                                Créer un article
-                            </Button>
+                        <Button onClick={onOpen} width="70%">
+                            Créer un article
+                        </Button>
+                        {/*
                             <chakra.table width="70%" m={5}>
                                 <chakra.thead bg={"blue.500"} p={5} color={"white"} colorScheme={"blue"}>
                                     <tr>
@@ -321,8 +251,9 @@ const UserPage = (props) => {
                                 </tbody>
 
                             </chakra.table>
-                            <ModalAuthor finalFocusRef={finalRef} open={isOpen} onClose={onClose}/>
-                        </> : null}
+                                        */}
+                        <ModalAuthor finalFocusRef={finalRef} open={isOpen} onClose={onClose}/>
+                    </> : null}
 
                 </Flex>
             </Container>

@@ -48,7 +48,7 @@ export const UsersProvider = (props) => {
 
     const connect = ({ accessToken, id }) => {
         window.localStorage.setItem("token", accessToken);
-        window.localStorage.setItem("id", parseInt(id));
+        window.localStorage.setItem("id", Math.parseInt(id).toString());
         setId(id);
         setToken(accessToken);
     };

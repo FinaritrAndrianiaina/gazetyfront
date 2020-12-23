@@ -1,9 +1,10 @@
-import { Button, Container, Divider, Heading, Text } from "@chakra-ui/core";
-import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import {Button, Container, Divider, Heading, Image, Text} from "@chakra-ui/react";
+import React, {Component} from "react";
+import {Link, withRouter} from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 import humanizeDate from "../utils/humanizeDate";
 import MarkdownRuntime from "../components/MarkdownRuntime";
+import {Box, VStack} from "@chakra-ui/layout";
 
 class ArticlePage extends Component {
     state = {
@@ -11,9 +12,11 @@ class ArticlePage extends Component {
             titre: undefined,
             contenu: undefined,
             createdAt: undefined,
+            cover: undefined,
             description: undefined,
         },
     };
+
     componentDidMount() {
         axiosInstance
             .get("article/" + this.props.match.params.id)
@@ -27,10 +30,12 @@ class ArticlePage extends Component {
             )
             .catch((error) => console.error(error));
     }
+
     render() {
         return (
-            <Container maxW={["100%", "95%"]} pt={5}>
-                <Button onClick={this.props.history.goBack} variant="outline">
+            <Container as={VStack} spacing={1} align={"left"} maxW={["100%", "95%"]} pt={5}>
+
+                <Button onClick={this.props.history.goBack} width={"80px"} variant="outline">
                     Retour
                 </Button>
                 <Heading as="h1" size="2xl">
@@ -40,7 +45,18 @@ class ArticlePage extends Component {
                 <Heading as="h3" size="md">
                     {this.state.article.description}
                 </Heading>
-                <Divider my={5} />
+                <Divider my={5}/>
+                    <Image
+                        borderTopLeftRadius={5}
+                        borderTopRightRadius={5}
+                        width={"100%"}
+                        height="200px"
+                        objectFit="cover"
+                        align={"center"}
+                        m={5}
+                        src={`${this.state.article.cover}`}
+                    />
+
                 {this.state.article.contenu ? (
                     <MarkdownRuntime>
                         {this.state.article.contenu}

@@ -8,7 +8,7 @@
 /coverage
 
 # production
-
+.idea
 /.vscode
 /build
 package-lock.json

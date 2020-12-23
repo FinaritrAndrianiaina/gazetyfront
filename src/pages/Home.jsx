@@ -1,15 +1,16 @@
-import {Box, Flex} from "@chakra-ui/core";
+import {Box, Flex} from "@chakra-ui/react";
 import React, {Component, useState} from "react";
 import axiosInstance from "../axiosInstance";
 import ArticleCard from "../components/ArticleCard";
 import Slider from "react-slick";
 import * as PropTypes from "prop-types";
 import {useBreakpointValue} from "@chakra-ui/media-query";
+import {Container, Grid, Stack, VStack} from "@chakra-ui/layout";
 
 function SliderResponsive(props) {
-    const display = useBreakpointValue({base:"none",md: "block", sm: "none"});
+    const display = useBreakpointValue({base: "none", md: "block", sm: "none"});
     return (
-        <Box display={display} >
+        <Box display={display}>
             <Slider
                 infinite={false}
                 dots={true}
@@ -58,18 +59,21 @@ class Home extends Component {
             <>
                 {/*<Flex flexWrap={"wrap"} direction="row" p={5} justifyContent="center">
 </Flex>*/}
-                <SliderResponsive article={this.state.article} callbackfn={(v, index) => (
-                    <React.Fragment key={"article-card-" + index}>
-                        <ArticleCard
-                            id={v.id}
-                            title={v.titre}
-                            cover={v.cover}
-                            createdAt={v.createdAt}
-                        >
-                            {v.description}
-                        </ArticleCard>
-                    </React.Fragment>
-                )}/>
+                <Container maxW={["80%","60%"]}>
+                    <VStack spacing={5} m={5}>
+                        {this.state.article.map(((value, index) => (
+                            <ArticleCard
+                                key={index}
+                                id={value.id}
+                                title={value.titre}
+                                cover={value.cover}
+                                createdAt={value.createdAt}
+                            >
+                                {value.description}
+                            </ArticleCard>
+                        )))}
+                    </VStack>
+                </Container>
 
             </>
         );

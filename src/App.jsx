@@ -12,7 +12,7 @@ import {
     ChakraProvider,
     localStorageManager,
     StylesProvider,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import UserPage from "./pages/UserPage";
 
 function App() {

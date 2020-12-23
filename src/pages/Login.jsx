@@ -8,7 +8,7 @@ import {
     Text,
     Input,
     Stack,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Redirect, withRouter } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
