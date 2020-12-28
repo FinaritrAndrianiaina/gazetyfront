@@ -15,7 +15,7 @@ import axiosInstance from "../axiosInstance";
 import {UsersContext} from "../UserContext";
 import {LinkBtn} from "../components/LinkBtn";
 
-class Login extends React.Component {
+class Register extends React.Component {
     state = {
         loading: false,
         message: "",
@@ -38,23 +38,20 @@ class Login extends React.Component {
         console.log('this.isAuth', this.isAuth)
     }
 
-    loginData() {
+    registerData() {
         this.setState({...this.state, loading: true})
         axiosInstance
-            .post("Users/login", {
+            .post("Users/create", {
                 username: this.username.current.value,
                 password: this.password.current.value,
             })
             .then((response) => {
-                this.connect(response.data);
-                console.log(response.data);
-                this.props.history.push("/");
+                this.props.history.push("/login");
                 this.setState({...this.state, loading: false})
             })
-            .catch((error) => {
-                    console.error(error);
-                    this.setState({...this.state, message: error?.response?.data.message, loading: false})
-                });
+            .catch((error) =>
+                this.setState({...this.state, message: error?.response?.data.message, loading: false})
+            );
     }
 
     render() {
@@ -80,7 +77,7 @@ class Login extends React.Component {
                             textAlign="left"
                             width={["100%", "70%"]}
                         >
-                            Se connecter
+                            Créer un compte
                         </Heading>
                         <Text> {this.state.message}</Text>
                         <Stack spacing={3} py={5} width={["100%", "70%"]}>
@@ -106,13 +103,13 @@ class Login extends React.Component {
                             </FormControl>
                             <Button
                                 isLoading={this.state.loading}
-                                onClick={this.loginData.bind(this)}
+                                onClick={this.registerData.bind(this)}
                                 variant="solid"
                                 colorScheme="facebook"
                             >
-                                Connecter
+                                Créer
                             </Button>
-                            <LinkBtn textDecoration={"underline"} to={"/register"}>Je n'ai pas de compte</LinkBtn>
+                            <LinkBtn textDecoration={"underline"} to={"/login"}>J'ai déjà un compte</LinkBtn>
                         </Stack>
                     </Flex>
                 </Container>
@@ -122,4 +119,4 @@ class Login extends React.Component {
 }
 
 
-export default withRouter(Login);
+export default withRouter(Register);

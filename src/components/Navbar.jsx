@@ -1,17 +1,7 @@
-import { Flex, chakra, Button } from "@chakra-ui/react";
+import {Button, chakra, Flex} from "@chakra-ui/react";
 import React from "react";
-import { Link } from "react-router-dom";
 import ColorSwitch from "../components/ColorSwitch";
-
-const LinkBtn = ({ children, to, ...rest }) => {
-    return (
-        <Link to={to}>
-            <Button variant="ghost" {...rest}>
-                {children}
-            </Button>
-        </Link>
-    );
-};
+import {LinkBtn} from "./LinkBtn";
 
 const Navbar = ({ isAuth, disconnect, ...props }) => {
     return (
@@ -46,10 +36,6 @@ const Navbar = ({ isAuth, disconnect, ...props }) => {
                 >
                     <LinkBtn mx={5} to="/">
                         Acceuil
-                    </LinkBtn>
-
-                    <LinkBtn mx={5} to="/article">
-                        Articles
                     </LinkBtn>
                     {!isAuth ? (
                         <LinkBtn

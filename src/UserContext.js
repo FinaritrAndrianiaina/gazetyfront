@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import axiosInstance from "./axiosInstance";
+import {useToast} from "@chakra-ui/toast";
 
 export const UsersContext = createContext();
 
@@ -25,6 +26,8 @@ export const UsersProvider = (props) => {
         }
     }, [token, id]);
 
+    const toast = useToast();
+    
     const disconnect = () => {
         console.log("deconnection");
         window.localStorage.removeItem("token");
@@ -48,7 +51,7 @@ export const UsersProvider = (props) => {
 
     const connect = ({ accessToken, id }) => {
         window.localStorage.setItem("token", accessToken);
-        window.localStorage.setItem("id", Math.parseInt(id).toString());
+        window.localStorage.setItem("id", parseInt(id).toString());
         setId(id);
         setToken(accessToken);
     };
@@ -56,6 +59,7 @@ export const UsersProvider = (props) => {
     return (
         <UsersContext.Provider
             value={{
+                toast,
                 token,
                 connect,
                 user,

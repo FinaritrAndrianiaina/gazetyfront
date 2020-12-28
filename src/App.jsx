@@ -14,6 +14,7 @@ import {
     StylesProvider,
 } from "@chakra-ui/react";
 import UserPage from "./pages/UserPage";
+import Register from "./pages/Register";
 
 function App() {
     const { isAuth, disconnect } = useContext(UsersContext);
@@ -32,8 +33,8 @@ function App() {
                             exact
                             component={ArticlePage}
                         />
-                        <Route path={["/article"]} component={Articles} />
                         <Route path={["/login"]} component={Login} />
+                        <Route path={["/register"]} component={Register} />
                         <Route path={["/user"]} component={UserPage} />
                         <Route path="*" component={NotFound} />
                     </Switch>

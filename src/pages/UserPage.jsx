@@ -8,7 +8,6 @@ import {
     FormControl,
     FormLabel,
     Heading,
-    Image,
     Input,
     Modal,
     ModalBody,
@@ -19,18 +18,23 @@ import {
     ModalOverlay,
     Stack,
     Textarea,
-    useClipboard,
     useDisclosure,
 } from "@chakra-ui/react";
 import axiosInstance from "../axiosInstance";
 import MarkdownRuntime from "../components/MarkdownRuntime";
 import * as PropTypes from "prop-types";
 import {DrawerListImage} from "../components/DrawerListImage";
+import {Table, Tbody, Td, Thead, Tr} from "@chakra-ui/table";
+import {BiEdit, BiTrash} from "react-icons/bi";
+import {IconButton} from "@chakra-ui/button";
+import {useToast} from "@chakra-ui/toast";
+import UpdateModal from "../components/UpdateOnAuthor";
 
 class WhenAuthor extends Component {
     state = {
         preview: "",
     };
+    static contextType = UsersContext;
 
     constructor(props) {
         super(props);
@@ -52,9 +56,10 @@ class WhenAuthor extends Component {
             .post("Article/create", data)
             .then((response) => {
                 console.log("response.data", response.data);
-                this.disclosure.onClose();
             })
-            .catch((error) => console.error("error", error.response.data));
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     preview() {
@@ -175,6 +180,7 @@ class ModalAuthor extends Component {
 }
 
 const UserPage = (props) => {
+    const toast = useToast();
     const {user, isAuth} = useContext(UsersContext);
     const {isOpen, onOpen, onClose} = useDisclosure();
     const finalRef = React.useRef();
@@ -183,6 +189,26 @@ const UserPage = (props) => {
             props.history.push("/");
         }
     }, [isAuth])
+
+    const deleteUser = (id) => {
+        axiosInstance.delete(`Article/delete/${id}`).then(response => {
+            console.log(response)
+            toast({
+                title: "Edit table",
+                description: response.data.message,
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+            });
+        }).catch(error => {
+            console.error(error);
+        });
+    }
+
+    function editUser(id) {
+
+    }
+
     return (
         <>
             <Container maxW={["100%", "60%"]}>
@@ -227,34 +253,34 @@ const UserPage = (props) => {
                         <Button onClick={onOpen} width="70%">
                             Créer un article
                         </Button>
-                        {/*
-                            <chakra.table width="70%" m={5}>
-                                <chakra.thead bg={"blue.500"} p={5} color={"white"} colorScheme={"blue"}>
-                                    <tr>
-                                        <td>Id</td>
-                                        <td>Titre</td>
-                                        <td>Action</td>
-                                    </tr>
-                                </chakra.thead>
-                                <tbody>
-                                {user.articles.map((v, index) => <chakra.tr key={"row-" + index.toString()} py={1}>
-                                    <td>
-                                        {v.id}
-                                    </td>
-                                    <td>
-                                        {v.title}
-                                    </td>
-                                    <td>
-                                        <IconButton colorScheme={"green"} icon={<BiEdit/>}/>
-                                    </td>
-                                </chakra.tr>)}
-                                </tbody>
-
-                            </chakra.table>
-                                        */}
+                        <Table>
+                            <Thead>
+                                <Tr>
+                                    <Td>Id</Td>
+                                    <Td>Titre</Td>
+                                    <Td>Action</Td>
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                {user.articles.map((value, index) => (
+                                    <Tr key={"tr-" + index}>
+                                        <td>
+                                            {value.id}
+                                        </td>
+                                        <td>
+                                            {value.title}
+                                        </td>
+                                        <td>
+                                            <UpdateModal title={value.title} id={value.id} />
+                                            <IconButton onClick={() => deleteUser(value.id)} colorScheme={"red"}
+                                                        icon={<BiTrash/>}/>
+                                        </td>
+                                    </Tr>
+                                ))}
+                            </Tbody>
+                        </Table>
                         <ModalAuthor finalFocusRef={finalRef} open={isOpen} onClose={onClose}/>
                     </> : null}
-
                 </Flex>
             </Container>
         </>

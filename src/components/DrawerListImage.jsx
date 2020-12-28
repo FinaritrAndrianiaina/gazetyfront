@@ -6,14 +6,16 @@ import {
     DrawerContent,
     DrawerFooter,
     DrawerHeader,
-    DrawerOverlay, Image,
+    DrawerOverlay,
+    Image,
     List,
-    ListItem, useClipboard,
+    ListItem,
+    useClipboard,
     useDisclosure
 } from "@chakra-ui/react";
-import React, {useEffect, useState} from "react";
+import {MdRefresh} from "react-icons/md";
+import React, {useEffect, useRef, useState} from "react";
 import axiosInstance from "../axiosInstance";
-import {Portal} from "@chakra-ui/portal";
 import {
     Modal,
     ModalBody,
@@ -23,8 +25,9 @@ import {
     ModalHeader,
     ModalOverlay
 } from "@chakra-ui/modal";
-import {Text} from "@chakra-ui/layout";
 import {Input} from "@chakra-ui/input";
+import {Text} from "@chakra-ui/layout";
+import {useToast} from "@chakra-ui/toast";
 
 
 const ItemClipboard = ({path, setCopied, ...props}) => {
@@ -40,7 +43,33 @@ const ItemClipboard = ({path, setCopied, ...props}) => {
 
 
 function UploadPhoto(props) {
+    const toast = useToast();
     const {isOpen, onOpen, onClose} = useDisclosure();
+    const refForm = useRef(null);
+    const uploadFile = () => {
+        const form = new FormData(refForm.current);
+        axiosInstance.post("File/upload", form)
+            .then(response => {
+                toast({
+                    position: "top-right",
+                    description: "Image uploaded",
+                    status: "success",
+                    duration: 2000,
+                    isClosable: true,
+                })
+                onClose();
+            })
+            .catch(error => {
+                toast({
+                    position: "top-right",
+                    title: "An error occured",
+                    description: error?.message,
+                    status: "error",
+                    duration: 2000,
+                    isClosable: true,
+                })
+            });
+    }
     return <>
         <Button onClick={onOpen} variant={"solid"} colorScheme={"green"}>
             Upload new
@@ -51,11 +80,13 @@ function UploadPhoto(props) {
                     <ModalHeader>Uploader une nouvelle image</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody>
-                        <Input type={"file"}/>
+                        <form ref={refForm}>
+                            <Input name={"image"} type={"file"}/>
+                        </form>
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme="green" mr={3}>
+                        <Button colorScheme="green" mr={3} onClick={uploadFile}>
                             Send
                         </Button>
                         <Button variant="ghost" coloSheme={"red"} onClick={onClose}>Close</Button>
@@ -71,11 +102,17 @@ export const DrawerListImage = (props) => {
     const btnRef = React.useRef();
     const [list, setList] = useState({image: []});
     const [copied, setCopied] = useState(null);
-    useEffect(() => {
+    const getAll = () => {
         axiosInstance
             .get("file")
             .then((response) => setList({image: response.data}))
             .catch((error) => console.error(error));
+    }
+    const refresh = ()=>{
+        getAll()
+    } 
+    useEffect(() => {
+        getAll()
     }, []);
     return (
         <>
@@ -94,6 +131,7 @@ export const DrawerListImage = (props) => {
                         <DrawerHeader>{Boolean(copied) ? `Vous avez copié ${copied}` : "Selectionner une image!!"}</DrawerHeader>
 
                         <DrawerBody>
+                            <Button variant="outline" my={3} onClick={refresh} as={MdRefresh}/>
                             <List spacing={2}>
                                 {list.image.map((value, index) => (
                                     <ListItem key={index}>
@@ -104,7 +142,7 @@ export const DrawerListImage = (props) => {
                         </DrawerBody>
 
                         <DrawerFooter>
-                            <UploadPhoto />
+                            <UploadPhoto/>
                             <Button variant="outline" mx={3} onClick={onClose}>
                                 Close
                             </Button>
