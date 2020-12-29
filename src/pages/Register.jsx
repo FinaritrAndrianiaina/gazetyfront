@@ -1,26 +1,16 @@
-import {
-    Button,
-    Container,
-    Flex,
-    FormControl,
-    FormLabel,
-    Heading,
-    Text,
-    Input,
-    Stack,
-} from "@chakra-ui/react";
-import React, {useState} from "react";
-import {Redirect, withRouter} from "react-router-dom";
+import {Button, Container, Flex, FormControl, FormLabel, Heading, Input, Stack, Text,} from "@chakra-ui/react";
+import React from "react";
+import {withRouter} from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 import {UsersContext} from "../UserContext";
 import {LinkBtn} from "../components/LinkBtn";
 
 class Register extends React.Component {
+    static contextType = UsersContext;
     state = {
         loading: false,
         message: "",
     };
-    static contextType = UsersContext;
 
     constructor(props) {
         super(props);

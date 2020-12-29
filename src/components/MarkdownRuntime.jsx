@@ -4,7 +4,7 @@ import overrides from "./mdx.component.override";
 
 const MarkdownRuntime = ({children}) => {
     return (
-        <Markdown options={{ overrides }}>
+        <Markdown options={{overrides}}>
             {children}
         </Markdown>
     );

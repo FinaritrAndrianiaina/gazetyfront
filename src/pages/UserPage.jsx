@@ -25,16 +25,16 @@ import MarkdownRuntime from "../components/MarkdownRuntime";
 import * as PropTypes from "prop-types";
 import {DrawerListImage} from "../components/DrawerListImage";
 import {Table, Tbody, Td, Thead, Tr} from "@chakra-ui/table";
-import {BiEdit, BiTrash} from "react-icons/bi";
+import {BiTrash} from "react-icons/bi";
 import {IconButton} from "@chakra-ui/button";
 import {useToast} from "@chakra-ui/toast";
 import UpdateModal from "../components/UpdateOnAuthor";
 
 class WhenAuthor extends Component {
+    static contextType = UsersContext;
     state = {
         preview: "",
     };
-    static contextType = UsersContext;
 
     constructor(props) {
         super(props);
@@ -271,7 +271,7 @@ const UserPage = (props) => {
                                             {value.title}
                                         </td>
                                         <td>
-                                            <UpdateModal title={value.title} id={value.id} />
+                                            <UpdateModal title={value.title} id={value.id}/>
                                             <IconButton onClick={() => deleteUser(value.id)} colorScheme={"red"}
                                                         icon={<BiTrash/>}/>
                                         </td>

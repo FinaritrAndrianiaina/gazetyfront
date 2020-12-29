@@ -1,11 +1,11 @@
-import {Box, Flex} from "@chakra-ui/react";
-import React, {Component, useState} from "react";
+import {Box} from "@chakra-ui/react";
+import React, {Component} from "react";
 import axiosInstance from "../axiosInstance";
 import ArticleCard from "../components/ArticleCard";
 import Slider from "react-slick";
 import * as PropTypes from "prop-types";
 import {useBreakpointValue} from "@chakra-ui/media-query";
-import {Container, Grid, Stack, VStack} from "@chakra-ui/layout";
+import {Container, VStack} from "@chakra-ui/layout";
 
 function SliderResponsive(props) {
     const display = useBreakpointValue({base: "none", md: "block", sm: "none"});
@@ -59,7 +59,7 @@ class Home extends Component {
             <>
                 {/*<Flex flexWrap={"wrap"} direction="row" p={5} justifyContent="center">
 </Flex>*/}
-                <Container maxW={["80%","60%"]}>
+                <Container maxW={["80%", "60%"]}>
                     <VStack spacing={5} m={5}>
                         {this.state.article.map(((value, index) => (
                             <ArticleCard

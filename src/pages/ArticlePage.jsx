@@ -1,10 +1,10 @@
 import {Button, Container, Divider, Heading, Image, Text} from "@chakra-ui/react";
 import React, {Component} from "react";
-import {Link, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import axiosInstance from "../axiosInstance";
 import humanizeDate from "../utils/humanizeDate";
 import MarkdownRuntime from "../components/MarkdownRuntime";
-import {Box, VStack} from "@chakra-ui/layout";
+import {VStack} from "@chakra-ui/layout";
 
 class ArticlePage extends Component {
     state = {
@@ -46,16 +46,16 @@ class ArticlePage extends Component {
                     {this.state.article.description}
                 </Heading>
                 <Divider my={5}/>
-                    <Image
-                        borderTopLeftRadius={5}
-                        borderTopRightRadius={5}
-                        width={"100%"}
-                        height="200px"
-                        objectFit="cover"
-                        align={"center"}
-                        m={5}
-                        src={`${this.state.article.cover}`}
-                    />
+                <Image
+                    borderTopLeftRadius={5}
+                    borderTopRightRadius={5}
+                    width={"100%"}
+                    height="200px"
+                    objectFit="cover"
+                    align={"center"}
+                    m={5}
+                    src={`${this.state.article.cover}`}
+                />
 
                 {this.state.article.contenu ? (
                     <MarkdownRuntime>

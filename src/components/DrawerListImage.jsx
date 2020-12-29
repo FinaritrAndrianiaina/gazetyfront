@@ -26,7 +26,6 @@ import {
     ModalOverlay
 } from "@chakra-ui/modal";
 import {Input} from "@chakra-ui/input";
-import {Text} from "@chakra-ui/layout";
 import {useToast} from "@chakra-ui/toast";
 
 
@@ -108,9 +107,9 @@ export const DrawerListImage = (props) => {
             .then((response) => setList({image: response.data}))
             .catch((error) => console.error(error));
     }
-    const refresh = ()=>{
+    const refresh = () => {
         getAll()
-    } 
+    }
     useEffect(() => {
         getAll()
     }, []);

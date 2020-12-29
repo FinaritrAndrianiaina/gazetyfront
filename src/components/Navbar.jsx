@@ -3,7 +3,7 @@ import React from "react";
 import ColorSwitch from "../components/ColorSwitch";
 import {LinkBtn} from "./LinkBtn";
 
-const Navbar = ({ isAuth, disconnect, ...props }) => {
+const Navbar = ({isAuth, disconnect, ...props}) => {
     return (
         <>
             <Flex
@@ -18,7 +18,7 @@ const Navbar = ({ isAuth, disconnect, ...props }) => {
                 flexDirection="row"
                 justifyContent="space-between"
             >
-                <ColorSwitch />
+                <ColorSwitch/>
                 <Flex>
                     <chakra.h1
                         fontSize="30px"
@@ -62,7 +62,7 @@ const Navbar = ({ isAuth, disconnect, ...props }) => {
                     )}
                 </Flex>
             </Flex>
-            <chakra.div height={70} />
+            <chakra.div height={70}/>
         </>
     );
 };

@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, {createContext, useEffect, useState} from "react";
 import axiosInstance from "./axiosInstance";
 import {useToast} from "@chakra-ui/toast";
 
@@ -21,13 +21,13 @@ export const UsersProvider = (props) => {
     useEffect(() => {
         axiosInstance.defaults.headers.common["Authorization"] = "Bearer " + token;
         if (Boolean(token)) {
-            getUser({ id });
+            getUser({id});
             setIsAuth(Boolean(token) && Boolean(id));
         }
     }, [token, id]);
 
     const toast = useToast();
-    
+
     const disconnect = () => {
         console.log("deconnection");
         window.localStorage.removeItem("token");
@@ -38,7 +38,7 @@ export const UsersProvider = (props) => {
         setIsAuth(false);
     };
 
-    const getUser = ({ id }) => {
+    const getUser = ({id}) => {
         axiosInstance
             .get("Users/" + id)
             .then((response) => {
@@ -49,7 +49,7 @@ export const UsersProvider = (props) => {
             });
     };
 
-    const connect = ({ accessToken, id }) => {
+    const connect = ({accessToken, id}) => {
         window.localStorage.setItem("token", accessToken);
         window.localStorage.setItem("id", parseInt(id).toString());
         setId(id);

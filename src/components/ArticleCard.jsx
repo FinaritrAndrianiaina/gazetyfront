@@ -1,19 +1,11 @@
-import {
-    Box,
-    Button,
-    Divider,
-    Flex,
-    Heading,
-    Image,
-    Text,
-} from "@chakra-ui/react";
+import {Box, Button, Flex, Heading, Image, Text,} from "@chakra-ui/react";
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import humanizeDate from "../utils/humanizeDate";
 import sliceChar from "../utils/sliceChar";
-import { BsArrowRight } from "react-icons/bs";
+import {BsArrowRight} from "react-icons/bs";
 
-const ArticleCard = ({ title, children, createdAt, id, cover, ...props }) => {
+const ArticleCard = ({title, children, createdAt, id, cover, ...props}) => {
     return (
         <Flex
             direction="column"
@@ -44,14 +36,14 @@ const ArticleCard = ({ title, children, createdAt, id, cover, ...props }) => {
             </Flex>
             <Flex px={5} pt={1} direction="column">
                 <Button
-                    rightIcon={<Box as={BsArrowRight} size="32px" />}
+                    rightIcon={<Box as={BsArrowRight} size="32px"/>}
                     as={Link}
                     to={"/article/" + id}
                     my={1}
                     variant="solid"
                     colorScheme="facebook"
                 >
-                    Voir l'article <Box size="32px" py={1} />
+                    Voir l'article <Box size="32px" py={1}/>
                 </Button>
             </Flex>
         </Flex>

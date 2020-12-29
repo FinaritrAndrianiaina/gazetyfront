@@ -1,9 +1,9 @@
-import {  Heading, Text } from "@chakra-ui/react";
+import {Heading, Text} from "@chakra-ui/react";
 
 export default {
-	p:{
-		component:Text
-	},
+    p: {
+        component: Text
+    },
     h1: {
         component: Heading,
         props: {

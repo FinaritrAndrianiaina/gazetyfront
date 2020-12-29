@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react";
-import {
-    useColorMode,
-    useColorModeValue,
-    IconButton,
-    Box,
-} from "@chakra-ui/react";
-import { GiSun,GiMoon } from "react-icons/gi";
+import React from "react";
+import {Box, IconButton, useColorMode, useColorModeValue,} from "@chakra-ui/react";
+import {GiMoon, GiSun} from "react-icons/gi";
 
 const ColorSwitch = (props) => {
-    const { toggleColorMode } = useColorMode();
+    const {toggleColorMode} = useColorMode();
     const text = useColorModeValue("dark", "light");
     const SwitchIcon = useColorModeValue(GiSun, GiMoon);
     return (
@@ -21,7 +16,7 @@ const ColorSwitch = (props) => {
             onClick={toggleColorMode}
             icon={
                 <Box fontSize={25}>
-                    <SwitchIcon />
+                    <SwitchIcon/>
                 </Box>
             }
             size="md"

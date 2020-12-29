@@ -6,12 +6,17 @@ import {
     Button,
     FormControl,
     FormLabel,
-    Input, Modal, ModalBody, ModalCloseButton,
-    ModalContent, ModalFooter, ModalHeader,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
     ModalOverlay,
     Stack,
-    Textarea,
-    Text
+    Text,
+    Textarea
 } from "@chakra-ui/react";
 import {DrawerListImage} from "./DrawerListImage";
 import MarkdownRuntime from "./MarkdownRuntime";
@@ -22,6 +27,7 @@ import {BiEdit} from "react-icons/bi";
 import humanizeDate from "../utils/humanizeDate";
 
 class UpdateOnAuthor extends Component {
+    static contextType = UsersContext;
     state = {
         preview: "",
         titre: undefined,
@@ -31,7 +37,6 @@ class UpdateOnAuthor extends Component {
         description: undefined,
         msg: ""
     };
-    static contextType = UsersContext;
 
     constructor(props) {
         super(props);
