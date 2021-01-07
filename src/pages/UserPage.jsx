@@ -56,6 +56,7 @@ class WhenAuthor extends Component {
             .post("Article/create", data)
             .then((response) => {
                 console.log("response.data", response.data);
+                this.props.disclosure.onClose();
             })
             .catch((error) => {
                 console.error(error);
