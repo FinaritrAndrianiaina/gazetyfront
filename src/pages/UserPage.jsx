@@ -190,6 +190,10 @@ const UserPage = (props) => {
         }
     }, [isAuth])
 
+    useEffect(() => {
+        console.log("user.articles", user.articles);
+    }, [user])
+
     const deleteUser = (id) => {
         axiosInstance.delete(`Article/delete/${id}`).then(response => {
             console.log(response)
@@ -257,7 +261,6 @@ const UserPage = (props) => {
                             <Thead>
                                 <Tr>
                                     <Td>Id</Td>
-                                    <Td>Titre</Td>
                                     <Td>Action</Td>
                                 </Tr>
                             </Thead>
@@ -265,14 +268,11 @@ const UserPage = (props) => {
                                 {user.articles.map((value, index) => (
                                     <Tr key={"tr-" + index}>
                                         <td>
-                                            {value.id}
+                                            {value}
                                         </td>
                                         <td>
-                                            {value.title}
-                                        </td>
-                                        <td>
-                                            <UpdateModal title={value.title} id={value.id}/>
-                                            <IconButton onClick={() => deleteUser(value.id)} colorScheme={"red"}
+                                            <UpdateModal  id={value}/>
+                                            <IconButton onClick={() => deleteUser(value)} colorScheme={"red"}
                                                         icon={<BiTrash/>}/>
                                         </td>
                                     </Tr>
